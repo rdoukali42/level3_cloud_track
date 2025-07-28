@@ -1,0 +1,115 @@
+You can find the floating IPs in your Terraform output (look for paas_api_urls or similar), or by running:
+
+terraform output paas_api_urls
+
+
+Connect to sql :
+psql -h <Node-paas-IP> -p 30080 -U myuser -d mydb
+psql -h postgresql.default.svc.cluster.local -U myuser -d mydb      --From Cluster
+
+
+1. List all nodes
+kubectl --kubeconfig ~/.kube/k3s-config get nodes -o wide
+
+2. List all pods in all namespaces
+kubectl --kubeconfig ~/.kube/k3s-config get pods --all-namespaces -o wide
+
+3. List all services in all namespaces
+kubectl --kubeconfig ~/.kube/k3s-config get svc --all-namespaces -o wide
+
+4. See which node a specific pod is running on
+kubectl --kubeconfig ~/.kube/k3s-config get pod <pod-name> -n <namespace> -o wide
+
+Or for all pods in a namespace:
+kubectl --kubeconfig ~/.kube/k3s-config get pods -n <namespace> -o wide
+
+5. Describe a pod (see events, node, status, etc.)
+kubectl --kubeconfig ~/.kube/k3s-config describe pod <pod-name> -n <namespace>
+
+6. Get logs from a pod
+kubectl --kubeconfig ~/.kube/k3s-config logs <pod-name> -n <namespace>
+
+7. Get the ClusterIP and NodePort for a service
+kubectl --kubeconfig ~/.kube/k3s-config get svc <service-name> -n <namespace> -o wideNodePort for a service
+
+
+8. Run a debug pod (e.g., psql client) inside the cluster
+kubectl --kubeconfig ~/.kube/k3s-config run -it --rm --image=postgres:13 psql-client -- psql -h postgresql.default.svc.cluster.local -U myuser -d mydb
+
+9. List all NodePort services and their ports
+kubectl --kubeconfig ~/.kube/k3s-config get svc --all-namespaces -o jsonpath='{range .items[?(@.spec.type=="NodePort")]}{.metadata.name}{"\t"}{.metadata.namespace}{"\t"}{range .spec.ports[*]}{.port}{"->"}{.nodePort}{"\n"}{end}{end}'
+
+10. Get pod IPs and node names for all pods
+kubectl --kubeconfig ~/.kube/k3s-config get pods -o wide --all-namespaces
+
+
+# Get hpa
+kubectl --kubeconfig ~/.kube/k3s-config get hpa
+
+#Get hpa desription 
+kubectl --kubeconfig ~/.kube/k3s-config describe hpa postgresql-hpa
+
+
+
+
+1. Get node resource usage (CPU/memory)
+kubectl --kubeconfig ~/.kube/k3s-config top node
+This shows CPU (cores) and memory (bytes) usage for each node.
+
+2. Get node details (capacity and allocatable resources)
+kubectl --kubeconfig ~/.kube/k3s-config describe node <node-name>
+Look for the Capacity and Allocatable sections for CPU and memory.
+
+3. See which pods are using the most CPU on a node
+kubectl --kubeconfig ~/.kube/k3s-config top pods --all-namespaces --sort-by=cpu
+
+
+
+
+List databases:
+curl http://<node-ip>:<node-port>/api/v1/databases
+
+Create a database:
+curl -X POST -H "Content-Type: application/json" -d '{"name":"testdb"}' http://<node-ip>:<node-port>/api/v1/databases
+
+Delete a database:
+curl -X DELETE http://<node-ip>:<node-port>/api/v1/databases/testdb
+
+
+Forwarding :
+kubectl --kubeconfig ~/.kube/k3s-config port-forward svc/paas-api 30081:80 -n default
+
+Update Go:
+sudo docker build -t reda404:latest5 .
+sudo docker tag reda404:latest5 reda404/reda404:latest5
+sudo docker push reda404/reda404:latest5
+
+kubectl --kubeconfig ~/.kube/k3s-config set image deployment/paas-api paas-api=reda404/reda404:latest5 -n default
+kubectl --kubeconfig ~/.kube/k3s-config get pods -n default
+kubectl --kubeconfig ~/.kube/k3s-config describe pod <pod-name> -n default
+
+
+# Deleter act pod:
+kubectl --kubeconfig ~/.kube/k3s-config delete pod <old-pod-name> -n default
+
+
+#Check Backend logs:
+kubectl --kubeconfig ~/.kube/k3s-config logs <your-pod-name> -n default
+
+
+curl -H "Authorization: Bearer ZouvDeeY_TrO3l5DWI35YQr3X7nFvYaewCuOKJlrzWbendkt_f93yunuoIfZeiAtw9YJXNf-uvf7yMMiSJWY-_9Pb_msbMVhaTlcRTrD" http://172.24.4.144:30081/api/v1/databases
+
+
+
+
+
+
+Zitadel Client ID :
+330301669445283120.       -      330412688444300258
+
+
+Zitadel Client ID - front:
+330302435543292898.      -      330412500052946224
+
+
+MTc1MzQ0MDM0M3xJa1p4VWpZMmFGVmxOVXBNY2tkR1RUTkJWelZEYjB0U2RreDVZa3hHVG1sdVpHTkhjMWRHYVc1MWVuTTlJZ289fE2hbbM08sH718IBHLkhS06kkSi5n1oYTe2DR2i5PnlF
