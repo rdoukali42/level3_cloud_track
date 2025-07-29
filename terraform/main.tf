@@ -65,7 +65,6 @@ module "cluster" {
 
 module "k8s_apps" {
   source = "./modules/k8s-apps"
-  # Namespace and app settings (use module defaults or override as needed)
   namespace                = "default"
   postgresql_name          = "postgresql"
   postgresql_image         = "postgres:13"
@@ -85,19 +84,16 @@ module "k8s_apps" {
   prometheus_image         = "prom/prometheus:latest"
   prometheus_replicas      = 1
   prometheus_node_port     = 30090
-  prometheus_config_yaml   = <<EOF
-    global:
-      scrape_interval: 15s
-    scrape_configs:
-      - job_name: 'kubernetes-pods'
-        kubernetes_sd_configs:
-        - role: pod
-    EOF
+  # prometheus_config_yaml   = <<EOF
+  #   global:
+  #     scrape_interval: 15s
+  #   scrape_configs:
+  #     - job_name: 'kubernetes-pods'
+  #       kubernetes_sd_configs:
+  #       - role: pod
+  #   EOF
   paas_api_name            = "paas-api"
   paas_api_image           = "reda404/paas-api:latest"
   paas_api_replicas        = 1
   paas_api_node_port       = 30081
-
-  # Optionally, pass cluster outputs if needed for app configuration
-  # e.g. master_floating_ips = module.cluster.master_floating_ips
 }

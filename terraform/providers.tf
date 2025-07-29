@@ -21,3 +21,9 @@ provider "kubernetes" {
   config_path = var.kubeconfig_path
   insecure    = true
 }
+
+provider "helm" {
+  kubernetes = {
+    config_path = var.kubeconfig_path
+  }
+}
