@@ -9,7 +9,7 @@ variable "ssh_key_name" {
 variable "public_key_path" {
   description = "Path to the public SSH key file."
   type        = string
-  default     = "/home/reda/.ssh/id_rsa.pub"
+  default     = "~/.ssh/id_rsa.pub"  # Update this to your key path
 }
 
 variable "image_name" {

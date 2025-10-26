@@ -1,0 +1,30 @@
+# Terraform Variables Configuration
+# Copy this file to terraform.tfvars and update with your values
+
+# SSH Configuration
+ssh_key_name      = "k8s-key"
+public_key_path   = "~/.ssh/id_rsa.pub"
+private_key_path  = "~/.ssh/id_rsa"
+
+# Cluster Configuration
+cluster_name      = "mycloud-cluster"
+image_name        = "ubuntu-22.04"  # Update based on your OpenStack images
+network_cidr      = "10.0.0.0/24"
+dns_nameservers   = ["8.8.8.8", "8.8.4.4"]
+
+# Node Configuration
+master_count      = 1
+worker_count      = 2
+master_flavor     = "m1.medium"  # Update based on your OpenStack flavors
+worker_flavor     = "m1.small"
+
+# SSH User (depends on your image)
+ssh_user          = "ubuntu"  # or "debian", "centos", etc.
+
+# User Data Scripts (optional)
+master_user_data  = ""
+worker_user_data  = ""
+
+# PostgreSQL Configuration
+# ⚠️ IMPORTANT: Change this password in production!
+postgresql_password = "CHANGE_ME_SECURE_PASSWORD_HERE"

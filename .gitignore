@@ -1,0 +1,68 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# SSH keys
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# Kubernetes configs
+kubeconfig
+*.kubeconfig
+.kube/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Go
+vendor/
+*.exe
+*.test
+*.out
+
+# Sensitive data
+credentials.json
+secrets.yaml
+*.secret

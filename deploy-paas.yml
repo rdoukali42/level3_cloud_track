@@ -40,7 +40,7 @@ spec:
           image: postgres:15
           env:
             - name: POSTGRES_PASSWORD
-              value: "mysecretpassword"
+              value: "CHANGE_ME"  # Use Kubernetes Secret in production
             - name: POSTGRES_DB
               value: "myapp"
           ports:

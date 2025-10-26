@@ -71,7 +71,7 @@ module "k8s_apps" {
   postgresql_replicas      = 1
   postgresql_db            = "mydb"
   postgresql_user          = "myuser"
-  postgresql_password      = "mypassword"
+  postgresql_password      = var.postgresql_password  # Change in terraform.tfvars
   postgresql_cpu_limit     = "3000m"
   postgresql_mem_limit     = "512Mi"
   postgresql_cpu_request   = "500m"

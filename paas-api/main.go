@@ -8,12 +8,20 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MicahParks/keyfunc"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	_ "github.com/lib/pq"
-	"github.com/MicahParks/keyfunc"
 )
+
+// getEnv retrieves an environment variable or returns a default value
+func getEnv(key, defaultValue string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return defaultValue
+}
 
 // JWTAuthMiddleware creates a Gin middleware for JWT authentication and authorization.
 // It requires the ZITADEL issuer URL and the expected audience (your API's Client ID).
@@ -87,10 +95,10 @@ func main() {
 
 	r := gin.Default()
 
-	// Configure CORS - for production, you should be more specific
-	// with AllowOrigins than a local development URL.
+	// Configure CORS - loaded from environment variable
+	allowedOrigins := strings.Split(getEnv("ALLOWED_ORIGINS", "http://localhost:8086"), ",")
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8086"}, // Change for production
+		AllowOrigins:     allowedOrigins,
 		AllowMethods:     []string{"GET", "POST", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -99,9 +107,9 @@ func main() {
 	}))
 
 	// --- ZITADEL Configuration ---
-	// IMPORTANT: Replace these placeholder values with your actual ZITADEL details.
-	zitadelIssuer := "https://first0cloud-shf5wf.us1.zitadel.cloud"
-	apiAudience := "330412688444300258" // <-- REPLACE THIS with the Client ID of your API Application in ZITADEL
+	// Load from environment variables for security
+	zitadelIssuer := getEnv("ZITADEL_ISSUER", "https://your-instance.zitadel.cloud")
+	apiAudience := getEnv("ZITADEL_API_CLIENT_ID", "your-api-client-id")
 
 	// --- Public Route ---
 	r.GET("/", func(c *gin.Context) {

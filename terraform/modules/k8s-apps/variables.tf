@@ -35,7 +35,8 @@ variable "postgresql_user" {
 variable "postgresql_password" {
   description = "Database password for PostgreSQL."
   type        = string
-  default     = "mypassword"
+  sensitive   = true
+  default     = "CHANGE_ME_IN_PRODUCTION"  # Override in terraform.tfvars
 }
 variable "postgresql_cpu_limit" {
   description = "CPU limit for PostgreSQL container."
